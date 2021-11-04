@@ -1,0 +1,595 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+//affichage acceuil
+void accueil() {
+    printf("================================================================\n");
+    printf("!'##:::::'##:                                                  !\n");
+    printf("! ##:'##: ##:                                                  !\n");
+    printf("! ##: ##: ##:                                                  !\n");
+    printf("! ##: ##: ##:                                                  !\n");
+    printf("! ##: ##: ##:                                Sangmin SHIM      !\n");
+    printf("! ##: ##: ##:                                Wejdene FOUGHALI  !\n");
+    printf("!. ###. ###::                                Aminata MBATHIE   !\n");
+    printf("!:...::...:::                                                  !\n");
+    printf("!:::'###::::'##::: ##:'##::: ##:'########::'######::'##:::'##::!\n");
+    printf("!::'## ##::: ###:: ##: ###:: ##: ##.....::'##... ##:. ##:'##:::!\n");
+    printf("!:'##:. ##:: ####: ##: ####: ##: ##::::::: ##:::..:::. ####::::!\n");
+    printf("!'##:::. ##: ## ## ##: ## ## ##: ######::: ##:::::::::. ##:::::!\n");
+    printf("! #########: ##. ####: ##. ####: ##...:::: ##:::::::::: ##:::::!\n");
+    printf("! ##.... ##: ##:. ###: ##:. ###: ##::::::: ##::: ##:::: ##:::::!\n");
+    printf("! ##:::: ##: ##::. ##: ##::. ##: ########:. ######::::: ##:::::!\n");
+    printf("================================================================");
+}
+//structure inscription
+struct Inscription {
+    char nom[30]; //nom saisi par l'utilisateur
+    char code[3]; //code de nationalit?entrer par l'utilisateur
+    char nationalite[20]; //nationalit?
+    int rang; //num?o de rang entr?par l'utilisateur
+    int dossard;
+    char vol[20]; //temp de vol
+    int note_jury_1, note_jury_2,note_jury_3;//les notes
+    double moyenne; //moyenne
+    };
+void option_1 (struct Inscription participant[], int nbp, int nco) {
+char code_verifier[10][3] = {"CH","FR","IT","GE","JP","NO","RU","US"}; //les codes des nationalit?
+    int i,j, code_valider=1, str[10];
+
+if (nbp == 10 || nbp > 10) {
+    printf("=====================================\n");
+    printf("! Le maximum de participants est 10 !\n");
+    printf("=====================================\n");
+    return;
+}
+
+
+    participant[nbp].dossard = nbp+1;
+
+printf("- Saisissez le nom : ");
+fflush(stdin);
+gets(participant[nbp].nom);
+
+printf("==========================\n");
+printf("! Code !  ! Nationalite  !\n");
+printf("==========================\n");
+printf("!  CH  !  ! Suisse       !\n");
+printf("!  FR  !  ! Francais(e)  !\n");
+printf("!  IT  !  ! Italien(ne)  !\n");
+printf("!  GE  !  ! Allemand(e)  !\n");
+printf("!  JP  !  ! Japonais(e)  !\n");
+printf("!  NO  !  ! Norvegien(ne)!\n");
+printf("!  RU  !  ! Russe        !\n");
+printf("!  US  !  ! Americain(e) !\n");
+//savoir si le code entrer par l'utlisateur exisete ou pas
+if (nco == 9) {
+        strcat(code_verifier[nco-1], participant[nco-1].code);
+        printf("!  %s  !  ! %s           !\n", participant[nco-1].code, participant[nco-1].nationalite);
+}
+
+if (nco == 10) {
+    for (i=8;i<nco;i++) {
+        strcat(code_verifier[i], participant[i].code);
+        printf("!  %s  !  ! %s           !\n", participant[i].code, participant[i].nationalite);
+                }
+}
+
+        printf("- Saisissez le code de nationalite : ");
+        fflush(stdin);
+        gets(participant[nbp].code);
+
+    for (i=0;i<8;i++) {
+        str[i] = strcmp(participant[nbp].code, code_verifier[i]);
+            if (str[i]==0) {
+                code_valider = 0;
+            }
+
+            if (nco==9) {
+                    if (str[i]==0 ||  strcmp(participant[nbp].code, participant[8].code) == 0)
+                        {
+                        code_valider = 0;
+                    }
+            }
+
+            if (nco==10) {
+                    if (str[i]==0 || strcmp(participant[nbp].code, participant[8].code) == 0 || strcmp(participant[nbp].code, participant[9].code) == 0)
+                    {
+                    code_valider = 0;
+                }
+            }
+    }
+
+//verifier si le code existe ou pas
+    while(code_valider!=0) {
+        printf("- Erreur ! Recommencez : ");
+
+        fflush(stdin);
+        gets(participant[nbp].code);
+
+        for (i=0;i<8;i++) {
+            str[i] = strcmp(participant[nbp].code, code_verifier[i]);
+            if (str[i]==0) {
+                code_valider=0;
+            }
+
+            if (nco==9) {
+                    if (str[i]==0 || strcmp(participant[nbp].code, participant[8].code) == 0)
+                        {
+                        code_valider = 0;
+                    }
+            }
+
+            if (nco==10) {
+                    if (str[i]==0 || strcmp(participant[nbp].code, participant[8].code) == 0 || strcmp(participant[nbp].code, participant[9].code) == 0)
+                    {
+                    code_valider = 0;
+                }
+            }
+        }
+    }
+
+        printf("- Saisissez le rang mondial : ");
+        fflush(stdin);
+        scanf("%d", &participant[nbp].rang);
+// JJD ne pourra pas inscrire deux fois le m?e participant (m?es noms, nationalit? et rangs)
+        for (i=0;i<nbp;i++) {
+            for (j=i+1;j<nbp+1;j++) {
+                    if (strcmp (participant[i].nom, participant[j].nom) == 0 || (participant[i].rang) == (participant[j].rang)) {
+                        printf("=============================================================\n");
+                        printf("! C'est impossible d'inscrire deux fois le meme participant.!\n");
+                        printf("! Memes noms ou rangs interdits.                            !\n");
+                        printf("! Refaites, s'il vous plait.                                !\n");
+                        printf("=============================================================\n");
+                        exit(0);
+                    }
+            }
+        }
+
+}
+void option_2 (struct Inscription participant[], int nbp, int nco) {
+    int i,j, str[10];
+    int ndd;
+    int code_valider=1;
+    char code_verifier[10][3] = {"CH","FR","IT","GE","JP","NO","RU","US"};
+//Saisir un num?o de dossard existant
+    printf("- Saisissez le numero de dossard : ");
+    fflush(stdin);
+    scanf("%d", &ndd);
+// Si ce n’est pas le cas, il recommencera sa saisie
+    if (ndd > nbp) {
+        printf("\n");
+        printf("Erreur. Ce dossard n'existe pas.");
+        return;
+    }
+//afficher les donn?s entr?par l'ulisateur avant de moifier
+    if(ndd == nbp || ndd < nbp) {
+        printf("============================== \n");
+        printf("!%d ! ! %s      ! !%s  ! !%d ! \n", participant[ndd-1].dossard, participant[ndd-1].nom, participant[ndd-1].code, participant[ndd-1].rang);
+        printf("============================== \n");
+//modifier les donn?s
+        printf("Modifiez le nom : ");
+        fflush(stdin);
+        gets(participant[ndd-1].nom);
+
+        printf("Modifiez le code : ");
+        fflush(stdin);
+        gets(participant[ndd-1].code);
+//verifier les code nationnalit?existe ou pas
+            for (i=0;i<8;i++) {
+                str[i] = strcmp(participant[ndd-1].code, code_verifier[i]);
+            if (str[i]==0) {
+                code_valider = 0;
+            }
+            if (nco==9) {
+                    if (str[i]==0 ||  strcmp(participant[ndd-1].code, participant[8].code) == 0)
+                        {
+                        code_valider = 0;
+                    }
+            }
+            if (nco==10) {
+                    if (str[i]==0 || strcmp(participant[ndd-1].code, participant[8].code) == 0 || strcmp(participant[ndd-1].code, participant[9].code) == 0)
+                    {
+                    code_valider = 0;
+                }
+            }
+    }
+//si le code existe pas recommencer
+    while(code_valider!=0) {
+        printf("- Ce code n'existe pas ! Recommencez : ");
+        fflush(stdin);
+        gets(participant[ndd-1].code);
+
+        for (i=0;i<8;i++) {
+                str[i] = strcmp(participant[ndd-1].code, code_verifier[i]);
+            if ((nco=8) && (str[i]== 0)) {
+                code_valider=0;
+            }
+            if (nco==9) {
+                    if (str[i]==0 || strcmp(participant[ndd-1].code, participant[8].code) == 0)
+                        {
+                        code_valider = 0;
+                    }
+            }
+            if (nco==10) {
+                    if (str[i]==0 || strcmp(participant[ndd-1].code, participant[8].code) == 0 || strcmp(participant[ndd-1].code, participant[9].code) == 0)
+                    {
+                    code_valider = 0;
+                }
+            }
+        }
+    }
+
+        printf("- Modifiez le rang : ");
+        fflush(stdin);
+        scanf("%d", &participant[ndd-1].rang);
+
+        for (i=0;i<nbp;i++) {
+            for (j=i+1;j<nbp+1;j++) {
+                    if (strcmp (participant[i].nom, participant[j].nom) == 0 || (participant[i].rang) == (participant[j].rang)) {
+                        printf("==============================================================\n");
+                        printf("! C'est impossible d'inscrire deux fois le meme participant. !\n");
+                        printf("! Memes noms ou rangs interdit.                              !\n");
+                        printf("! Refaites, s'il vous plait.                                 !\n");
+                        printf("==============================================================\n");
+                        exit(0);
+                    }
+            }
+        }
+
+        printf("============================== \n");
+        printf("!%d ! ! %s      ! !%s  ! !%d ! \n", participant[ndd-1].dossard, participant[ndd-1].nom, participant[ndd-1].code, participant[ndd-1].rang);
+        printf("============================== \n");
+    }
+
+
+
+
+
+}
+void option_3 (struct Inscription participant[], int nbp) {
+    //Le programme affichera les noms ,nationalit? et rangsdetouslesparticipantsclass?parnum?odedossard
+        int i;
+
+        printf("======================================\n");
+        printf("! Dossard ! Nom          ! Code ! Rang !\n");
+        printf("======================================\n");
+
+        for (i=0;i<nbp;i++) {
+            printf("! %d       ! %-10s        ! %s    ! %d   !\n", participant[i].dossard, participant[i].nom, participant[i].code, participant[i].rang);
+        }
+
+
+}
+void option_4 (struct Inscription participant[], int nco, int option_4_premier) {
+
+    int i, str[10];
+    char code_verifier[10][3] = {"CH","FR","IT","GE","JP","NO","RU","US"};
+    int code_valider=0;
+
+    if (nco == 10) {
+        printf("\n");
+        printf("Impossible de rajouter. Le total de maximum doit etre 10. Refaites s'il vous plait");
+        return;
+    }
+
+    if (option_4_premier == 1) {
+
+    printf("==========================\n");
+    printf("! Code ! ! Nationalite   !\n");
+    printf("==========================\n");
+    printf("!  CH  ! !    Suisse     !\n");
+    printf("!  FR  ! ! Francais(e)   !\n");
+    printf("!  IT  ! ! Italien(ne)   !\n");
+    printf("!  GE  ! ! Allemand(e)   !\n");
+    printf("!  JP  ! ! Japonais(e)   !\n");
+    printf("!  NO  ! ! Norvegien(ne) !\n");
+    printf("!  RU  ! ! Russe         !\n");
+    printf("!  US  ! ! Americain(e)  !\n");
+    }
+
+// JJD saisira un code non existant sur deux lettres
+    printf("- Code : ");
+    fflush(stdin);
+    gets(participant[nco].code);
+    printf("Nationalite : ");
+    fflush(stdin);
+    gets(participant[nco].nationalite);
+
+    for (i=0;i<8;i++) {
+        str[i] = strcmp(participant[nco].code, code_verifier[i]);
+            if (str[i]==0) {
+                code_valider = 1;
+            }
+    }
+
+    printf("==========================\n");
+    printf("! Code ! ! Nationalite   !\n");
+    printf("==========================\n");
+    printf("!  CH  ! !    Suisse     !\n");
+    printf("!  FR  ! ! Francais(e)   !\n");
+    printf("!  IT  ! ! Italien(ne)   !\n");
+    printf("!  GE  ! ! Allemand(e)   !\n");
+    printf("!  JP  ! ! Japonais(e)   !\n");
+    printf("!  NO  ! ! Norvegien(ne) !\n");
+    printf("!  RU  ! ! Russe         !\n");
+    printf("!  US  ! ! Americain(e)  !\n");
+
+if (nco == 8 && code_valider != 1) {
+    printf("\n");
+    printf("!  %s  ! ! %s - Code Rajoute. !\n", participant[nco].code, participant[nco].nationalite);
+    }
+
+if (nco == 9 && code_valider != 1 && strcmp(participant[8].code,participant[9].code) !=0) {
+    printf("\n");
+    printf("!  %s  ! ! %s - Code Rajoute. !", participant[nco-1].code, participant[nco-1].nationalite);
+    printf("!  %s  ! ! %s - Code Rajoute. !", participant[nco].code, participant[nco].nationalite);
+    }
+
+
+//JJD ne pourra pas ajouter plus de 2 nationalit?, pour un total de 10 maximum donc.?
+
+    while(code_valider == 1 || strcmp(participant[8].code,participant[9].code) == 0) {
+
+        if (nco == 9) {
+            printf("!  %s  ! ! %s - Code Rajoute. !!\n", participant[8].code, participant[8].nationalite);
+        }
+
+        printf("- Ce code existe deja ! Recommencez\n");
+        printf("- Code : ");
+        fflush(stdin);
+
+        gets(participant[nco].code);
+        printf("- Nationalite : ");
+        fflush(stdin);
+        gets(participant[nco].nationalite);
+
+        for (i=0;i<8;i++) {
+            str[i] = strcmp(participant[nco].code, code_verifier[i]);
+            if (str[i] == 0)
+            {
+             code_valider = 1;
+            }
+        }
+            if (nco==8 && str[0]!=0&&str[1]!=0&&str[2]!=0&&str[3]!=0&&str[4]!=0&&str[5]!=0&&str[6]!=0&&str[7]!=0) {
+             code_valider = 2;
+             }
+            if (nco==9 && str[0]!=0&&str[1]!=0&&str[2]!=0&&str[3]!=0&&str[4]!=0&&str[5]!=0&&str[6]!=0&&str[7]!=0&&strcmp(participant[nco-1].code, participant[nco].code)!=0) {
+             code_valider = 2;
+            }
+    }
+
+    if (nco == 8 && code_valider == 2) {
+    printf("===============================\n");
+    printf("! Code ! ! Nationalite        !\n");
+    printf("===============================\n");
+    printf("!  CH  ! !    Suisse          !\n");
+    printf("!  FR  ! ! Francais(e)        !\n");
+    printf("!  IT  ! ! Italien(ne)        !\n");
+    printf("!  GE  ! ! Allemand(e)        !\n");
+    printf("!  JP  ! ! Japonais(e)        !\n");
+    printf("!  NO  ! ! Norvegien(ne)      !\n");
+    printf("!  RU  ! ! Russe              !\n");
+    printf("!  US  ! ! Americain(e)       !\n");
+    printf("!  %s  ! ! %s - Code Rajoute. !\n", participant[nco].code, participant[nco].nationalite);
+    }
+
+    if (nco == 9 && code_valider == 2) {
+    printf("===============================\n");
+    printf("! Code ! ! Nationalite        !\n");
+    printf("===============================\n");
+    printf("!  CH  ! !    Suisse          !\n");
+    printf("!  FR  ! ! Francais(e)        !\n");
+    printf("!  IT  ! ! Italien(ne)        !\n");
+    printf("!  GE  ! ! Allemand(e)        !\n");
+    printf("!  JP  ! ! Japonais(e)        !\n");
+    printf("!  NO  ! ! Norvegien(ne)      !\n");
+    printf("!  RU  ! ! Russe              !\n");
+    printf("!  US  ! ! Americain(e)       !\n");
+    printf("!  %s  ! ! %s - Code Rajoute. !\n", participant[nco-1].code, participant[nco-1].nationalite);
+    printf("!  %s  ! ! %s - Code Rajoute. !\n", participant[nco].code, participant[nco].nationalite);
+    }
+}
+
+void menu() {
+    //afficher menu 1 demand?
+    printf("\n\n");
+    printf("======================================\n");
+    printf("! 1. Inscrire un participant         !\n");
+    printf("! 2. Modifier une inscription        !\n");
+    printf("! 3. Lister les inscrits             !\n");
+    printf("! 4. Ajouter une nouvelle nationalite!\n");
+    printf("! *. Debut de la competition         !\n");
+    printf("======================================\n");
+}
+void menu_2() {
+     //afficher menu 2 demand?
+    printf("================================\n");
+    printf("! 1. Classement final          !\n");
+    printf("! 2. Resultats par nationalite !\n");
+    printf("! *. fin du programme          !\n");
+    printf("================================\n");
+}
+void competition(struct Inscription participant[],int nbp, int ndd){
+    int i;
+//JJD devra saisir un num?o de dossard existant. Si ce n’est pas le cas, il recommencera sa saisie ;?
+    while (ndd > nbp) {
+        printf("\n");
+        printf("====================================\n");
+        printf("! Erreur. Ce dossard n'existe pas. !\n");
+        printf("====================================\n");
+
+        printf("- Resaisissez le numero de dossard, s'il vous plait : ");
+        scanf("%d", &ndd);
+    }
+
+ if(ndd == nbp || ndd < nbp) {
+        //saisie de temp de vol
+        printf("- Saisissez le temps de vol du participant (facultatif) : ");
+            fflush(stdin);
+            gets(participant[ndd-1].vol);
+
+            for(i=0;i<2;i++) {
+            if (participant[ndd-1].vol[i]=='\0') {
+                strcpy(participant[ndd-1].vol,"forf");
+            }
+            }
+//Saisir la note artistique sur 10 du premier jury ;?
+        printf("- Saisissez  la note artistique sur 10 du premier jury : ");
+            fflush(stdin);
+            scanf("%d", &participant[ndd-1].note_jury_1);
+//Saisir la note artistique sur 10 du deuxi?e jury ;?
+        printf("- Saisissez  la note artistique sur 10 du deuxieme jury : ");
+            fflush(stdin);
+            scanf("%d", &participant[ndd-1].note_jury_2);
+//Saisir la note artistique sur 10 du troisi?e jury ;?
+        printf("- Saisissez  la note artistique sur 10 du troisieme jury : ");
+            fflush(stdin);
+            scanf("%d", &participant[ndd-1].note_jury_3);
+
+        printf("==================================================\n");
+        printf("! Dossard ! ! Nom       ! ! Nat ! ! Rang ! ! Vol !\n");
+        printf("==================================================\n");
+        printf("! %d      ! ! %s        ! ! %s  ! ! %d   ! ! %s  !\n", participant[ndd-1].dossard, participant[ndd-1].nom, participant[ndd-1].code, participant[ndd-1].rang, participant[ndd-1].vol);
+        printf("--------------------------------------------------\n\n\n");
+}
+}
+
+void competition_affiche(struct Inscription participant[],int nbp, int nda) {
+    int i;
+
+    if (nbp == nda){
+        printf("==================================================\n");
+        printf("! Dossard ! ! Nom       ! ! Nat ! ! Rang ! ! Vol !\n");
+        printf("==================================================\n");
+
+
+            for(i=0;i<nbp;i++) {
+        printf("! %d      ! ! %s        ! ! %s  ! ! %d   ! ! %s  !\n", participant[i].dossard, participant[i].nom, participant[i].code, participant[i].rang, participant[i].vol);
+    }
+        printf("=================================================\n");
+}
+}
+int main()
+{   int nbp=0, ndd, i, option_4_premier=1, nco=8, nda=0;
+    char a, b;
+    struct Inscription participant[10];
+
+    accueil();
+    menu();
+    printf("\n");
+
+    printf("========================\n");
+    printf("! Selectionnez le menu !\n");
+    printf("========================\n");
+
+    printf("Tapez entre 1 ~ 4 ou * : ");
+    fflush(stdin);
+    scanf("%c",&a);
+
+    while(a!='*') {
+    switch (a) {
+
+    case '1' :
+        option_1(participant,nbp,nco);
+
+        if(nbp<10) {
+        nbp++;
+        }
+        break;
+
+    case '2' :
+        option_2(participant,nbp,nco);
+        break;
+
+
+    case '3' :
+        option_3(participant,nbp);
+        break;
+
+    case '4' :
+
+        printf("\n");
+        option_4(participant,nco,option_4_premier);
+        if (nco == 10) break;
+        nco++;
+        option_4_premier++;
+
+
+    break;
+
+    }
+
+    printf("\n\n");
+    menu();
+
+    printf("========================\n");
+    printf("! Selectionnez le menu !\n");
+    printf("========================\n");
+
+    printf("Tapez entre 1 ~ 4 ou * : ");
+    fflush(stdin);
+    scanf("%c",&a);
+}
+
+    printf("--------------------------------------------------------------------\n\n\n");
+    printf("==================\n");
+    printf("! La Competition !\n");
+    printf("==================\n");
+
+    printf("\n");
+    option_3(participant, nbp);
+    printf("- Pour renseigner la performance d'un participant, saisissez son numero de dossard : ");
+    fflush(stdin);
+    scanf("%d",&ndd);
+    competition(participant,nbp,ndd);
+    nda++;
+
+    for(i=0;i<nbp-1;i++) {
+        option_3(participant, nbp);
+        printf("\n\n");
+        printf("- Pour renseigner la performance d'un participant, saisissez son numero de dossard : ");
+        fflush(stdin);
+        scanf("%d",&ndd);
+        printf("\n\n");
+        competition(participant,nbp,ndd);
+        nda++;
+        printf("\n");
+    }
+
+    competition_affiche(participant,nbp,nda);
+    printf("\n");
+
+    printf("\n\n\n");
+    printf("=========\n");
+    printf("!Resultat!\n");
+    printf("=========\n");
+
+    printf("\n");
+    menu_2();
+
+    printf("\n");
+    printf("Tapez : ");
+
+    fflush(stdin);
+    scanf("%c",&b);
+
+
+    while(b!='*') {
+        switch (b) {
+
+        case '1' :
+            break;
+
+        case '2' :
+            break;
+    }
+
+    menu_2();
+    printf("\n");
+    printf("Tapez : ");
+    fflush(stdin);
+    scanf("%c",&b);
+    }
+
+    return 0;
+}

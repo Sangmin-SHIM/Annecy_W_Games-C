@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1582815001 source:c:\users\ssm47\desktop\program\language c\annecy w-games 2020\main.cpp
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+
