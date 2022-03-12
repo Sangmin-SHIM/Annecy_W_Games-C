@@ -43,15 +43,15 @@ Dans le main, on a l'ensemble des fonctions et des structures, la sélection du 
 
 <h4>Les variables utilisées</h4>
 
-(1) nbp = nombre de participants. Dès que l’on inscrit un participant, cela augmente de 1.
+(1) nbp = nombre de participants. Dès que l’on inscrit un participant, cela augmente de 1. <br>
 (2) nco = numéro de code au cas où on rajoute 1 ou 2 nationalité(s). Dès que l’on rajoute un code, cela 
- augmente de 1.
-(3) ndd = numéro de dossard.
+ augmente de 1. <br>
+(3) ndd = numéro de dossard. <br>
 (4) nda = numéro d’affiche . Pour l’étape 2 Compétition, cela permet d’afficher un tableau sur 
  lequelle on saisit le temps de vol du participant et la note artistique concernant le nombre 
- de participants (=nbp). 
-(5) code_vérifier = vérifier si le code de nationalité est déjà existant ou pas.
+ de participants (=nbp). <br>
+(5) code_vérifier = vérifier si le code de nationalité est déjà existant ou pas. <br>
 (6) code_valider = Dans la condition où on rajoute le code de nationalité, cela vérifie que on peut 
- inscrire le(s) code(s) rajouté(s) comme ceux déjà existants.
-En somme l'application correspond ou presque aux exigences de M.JJD, elle respecte les règles de celui-ci et à toutes les fonctionnalités souhaitées. L'étape 3 a été particulièrement difficile, la mise en place et 
-l'affichage du tableau avec les positions les notes et le calcul de la moyenne.
+ inscrire le(s) code(s) rajouté(s) comme ceux déjà existants. <br>
+ <br>
+En somme l'application correspond ou presque aux exigences de M.JJD, elle respecte les règles de celui-ci et à toutes les fonctionnalités souhaitées. L'étape 3 a été particulièrement difficile, la mise en place et l'affichage du tableau avec les positions les notes et le calcul de la moyenne.
